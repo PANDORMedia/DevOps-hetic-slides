@@ -1,11 +1,4 @@
-# DevOps Avancé - Support étudiant
-
-Ce dépôt contient uniquement les éléments destinés aux étudiants :
-
-- les slides du cours
-- les exercices
-- le starter code
-- les scripts pour lancer les slides en local
+# DevOps Avancé
 
 ## Contenu
 
