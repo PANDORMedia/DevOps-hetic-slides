@@ -1,4 +1,4 @@
-# Terraform — Fondamentaux
+# Terraform - Fondamentaux
 
 ## Objectif
 Écrire votre première configuration Terraform, comprendre le cycle plan/apply et gérer le state.
@@ -207,4 +207,4 @@ terraform apply tfplan      # Appliquer un plan sauvegardé
 ### Erreurs courantes
 - **Provider not found** : relancer `terraform init`
 - **Port already in use** : changer `web_port` ou arrêter le conteneur existant
-- **State lock** : un autre process Terraform tourne — attendre ou supprimer le lock
+- **State lock** : un autre process Terraform tourne - attendre ou supprimer le lock

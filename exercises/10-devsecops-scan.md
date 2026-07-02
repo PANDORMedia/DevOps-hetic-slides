@@ -1,4 +1,4 @@
-# DevSecOps — Scan & Conformité
+# DevSecOps - Scan & Conformité
 
 ## Objectif
 Intégrer la sécurité dans le pipeline CI/CD : scanner les images Docker, les dépendances, les fichiers IaC et appliquer des politiques de conformité.

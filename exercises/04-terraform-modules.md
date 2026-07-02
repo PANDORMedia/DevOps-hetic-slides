@@ -1,4 +1,4 @@
-# Terraform — Modules & Remote State
+# Terraform - Modules & Remote State
 
 ## Objectif
 Créer des modules Terraform réutilisables et configurer un backend distant pour le state.

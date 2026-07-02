@@ -1,235 +1,216 @@
-# Ansible — Playbooks & Roles
+# Ansible - Playbooks & Roles après Terraform
 
 ## Objectif
-Écrire des playbooks Ansible pour configurer des serveurs, comprendre l'idempotence et structurer le code en roles.
+Configurer avec Ansible les conteneurs créés dans l'exercice Terraform précédent, comprendre l'idempotence et structurer le code en roles.
 
 ## Contexte
-Nous utiliserons des conteneurs Docker comme "serveurs cibles" pour simuler un environnement multi-machines sans avoir besoin de VMs.
+Dans l'exercice Terraform modules, Terraform a provisionné :
+
+- un réseau Docker `devops-dev`
+- deux conteneurs web `devops-app-dev-0` et `devops-app-dev-1`
+- un conteneur PostgreSQL `devops-app-db-dev`
+
+Ici, on ne recrée pas l'infrastructure. Terraform garde la responsabilité du cycle de vie des ressources Docker. Ansible prend le relais pour configurer les conteneurs web déjà existants.
+
+## Pré-requis
+
+Depuis l'exercice Terraform :
+
+```bash
+cd infra/terraform/environments/dev
+terraform workspace select dev
+terraform apply -var-file="terraform.tfvars" -var="db_password=secret123"
+docker ps --filter "name=devops-app"
+```
+
+Si les collections Ansible nécessaires ne sont pas disponibles :
+
+```bash
+ansible-galaxy collection install community.docker community.general
+```
 
 ## Consignes
 
-### 1. Infrastructure de test
+### 1. Créer le dossier Ansible
 
-Créer `infra/ansible/docker-compose.yml` :
-
-```yaml
-services:
-  node1:
-    image: ubuntu:22.04
-    container_name: ansible-node1
-    command: sleep infinity
-    networks:
-      - ansible-net
-
-  node2:
-    image: ubuntu:22.04
-    container_name: ansible-node2
-    command: sleep infinity
-    networks:
-      - ansible-net
-
-networks:
-  ansible-net:
-    name: ansible-net
-```
+Depuis la racine du projet :
 
 ```bash
+mkdir -p infra/ansible
 cd infra/ansible
-docker compose up -d
 ```
 
-### 2. Inventaire
+### 2. Inventaire basé sur les sorties Terraform
 
 Créer `infra/ansible/inventory.yml` :
 
 ```yaml
+---
 all:
   vars:
     ansible_connection: docker
+    ansible_python_interpreter: /usr/bin/python3
+    app_name: devops-app
+    app_environment: dev
+    app_log_level: info
+    database_host: devops-app-db-dev
+    database_port: 5432
+
   children:
     webservers:
       hosts:
-        ansible-node1:
-    appservers:
+        devops-app-dev-0:
+          public_url: http://localhost:8080
+        devops-app-dev-1:
+          public_url: http://localhost:8081
+
+    databases:
       hosts:
-        ansible-node2:
+        devops-app-db-dev:
 ```
 
-Vérifier la connexion :
+Vérifier que les noms correspondent bien aux conteneurs Terraform :
+
 ```bash
-ansible all -i inventory.yml -m ping
+docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}"
 ```
 
-### 3. Premier playbook
+> Les conteneurs `nginx:alpine` n'ont pas Python par défaut. On ne commence donc pas par `ansible -m ping` : on va d'abord bootstrapper Python avec le module `raw`.
 
-Créer `infra/ansible/playbook-base.yml` :
+### 3. Bootstrap Python sur les conteneurs web
+
+Créer `infra/ansible/bootstrap-python.yml` :
 
 ```yaml
 ---
-- name: Configuration de base des serveurs
-  hosts: all
-  become: true
-  vars:
-    packages:
-      - curl
-      - wget
-      - vim
-      - htop
-      - net-tools
-
-  tasks:
-    - name: Mettre à jour le cache apt
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-
-    - name: Installer les paquets de base
-      apt:
-        name: "{{ packages }}"
-        state: present
-
-    - name: Créer le répertoire d'application
-      file:
-        path: /opt/app
-        state: directory
-        owner: root
-        group: root
-        mode: '0755'
-
-    - name: Copier le fichier de configuration
-      copy:
-        content: |
-          # Configuration de l'application
-          APP_ENV=production
-          APP_LOG_LEVEL=info
-          APP_PORT=3000
-        dest: /opt/app/.env
-        mode: '0600'
-
-    - name: Afficher les infos système
-      debug:
-        msg: |
-          Hostname: {{ ansible_hostname }}
-          OS: {{ ansible_distribution }} {{ ansible_distribution_version }}
-```
-
-```bash
-ansible-playbook -i inventory.yml playbook-base.yml
-```
-
-### 4. Playbook avec handlers
-
-Créer `infra/ansible/playbook-nginx.yml` :
-
-```yaml
----
-- name: Installer et configurer Nginx
+- name: Préparer les conteneurs web pour Ansible
   hosts: webservers
-  become: true
-
-  handlers:
-    - name: restart nginx
-      shell: nginx -g 'daemon off;' &
-      async: 10
-      poll: 0
+  gather_facts: false
 
   tasks:
-    - name: Installer Nginx
-      apt:
-        name: nginx
-        state: present
-        update_cache: yes
-
-    - name: Configurer le site
-      copy:
-        content: |
-          server {
-              listen 80 default_server;
-              root /var/www/html;
-              index index.html;
-
-              location / {
-                  try_files $uri $uri/ =404;
-              }
-
-              location /health {
-                  return 200 '{"status": "ok"}';
-                  add_header Content-Type application/json;
-              }
-          }
-        dest: /etc/nginx/sites-available/default
-      notify: restart nginx
-
-    - name: Déployer la page d'accueil
-      copy:
-        content: |
-          <!DOCTYPE html>
-          <html>
-          <head><title>DevOps Training</title></head>
-          <body>
-            <h1>Serveur configuré par Ansible</h1>
-            <p>Host: {{ ansible_hostname }}</p>
-          </body>
-          </html>
-        dest: /var/www/html/index.html
+    - name: Installer Python si absent
+      raw: test -x /usr/bin/python3 || apk add --no-cache python3
+      register: bootstrap_python
+      changed_when: bootstrap_python.stdout | length > 0
 ```
 
-### 5. Structure en roles
+Tester ensuite la connexion Ansible :
 
 ```bash
-mkdir -p roles/{base,nginx,app}/{tasks,handlers,templates,files,vars,defaults}
+ansible-playbook -i inventory.yml bootstrap-python.yml
+ansible webservers -i inventory.yml -m ping
 ```
 
-**roles/base/tasks/main.yml** :
-```yaml
----
-- name: Mettre à jour le cache apt
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
+### 4. Structure en roles
 
-- name: Installer les paquets de base
-  apt:
-    name: "{{ base_packages }}"
-    state: present
+Créer la structure :
+
+```bash
+mkdir -p roles/{base,nginx}/{tasks,handlers,templates,defaults}
 ```
 
 **roles/base/defaults/main.yml** :
+
 ```yaml
 ---
 base_packages:
   - curl
-  - wget
-  - vim
-  - htop
-  - net-tools
+  - tzdata
+
+app_config_dir: /opt/app
+```
+
+**roles/base/tasks/main.yml** :
+
+```yaml
+---
+- name: Installer les paquets d'exploitation
+  community.general.apk:
+    name: "{{ base_packages }}"
+    state: present
+    update_cache: true
+
+- name: Créer le répertoire de configuration applicative
+  file:
+    path: "{{ app_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Déployer le fichier d'environnement applicatif
+  copy:
+    content: |
+      APP_NAME={{ app_name }}
+      APP_ENV={{ app_environment }}
+      APP_LOG_LEVEL={{ app_log_level }}
+      PUBLIC_URL={{ public_url }}
+      DATABASE_HOST={{ database_host }}
+      DATABASE_PORT={{ database_port }}
+    dest: "{{ app_config_dir }}/.env"
+    owner: root
+    group: root
+    mode: '0640'
+```
+
+**roles/nginx/defaults/main.yml** :
+
+```yaml
+---
+nginx_conf_path: /etc/nginx/conf.d/default.conf
+nginx_web_root: /usr/share/nginx/html
 ```
 
 **roles/nginx/tasks/main.yml** :
+
 ```yaml
 ---
-- name: Installer Nginx
-  apt:
-    name: nginx
-    state: present
+- name: Vérifier que le répertoire web existe
+  file:
+    path: "{{ nginx_web_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: Configurer le site
+- name: Déployer la configuration Nginx
   template:
     src: default.conf.j2
-    dest: /etc/nginx/sites-available/default
-  notify: restart nginx
+    dest: "{{ nginx_conf_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload nginx
+
+- name: Valider la configuration Nginx
+  command: nginx -t
+  changed_when: false
 
 - name: Déployer la page d'accueil
   template:
     src: index.html.j2
-    dest: /var/www/html/index.html
+    dest: "{{ nginx_web_root }}/index.html"
+    owner: root
+    group: root
+    mode: '0644'
+```
+
+**roles/nginx/handlers/main.yml** :
+
+```yaml
+---
+- name: reload nginx
+  command: nginx -s reload
+  changed_when: true
 ```
 
 **roles/nginx/templates/default.conf.j2** :
-```
+
+```nginx
 server {
-    listen {{ nginx_port }} default_server;
-    root /var/www/html;
+    listen 80 default_server;
+    server_name _;
+    root {{ nginx_web_root }};
     index index.html;
 
     location / {
@@ -237,84 +218,127 @@ server {
     }
 
     location /health {
-        return 200 '{"status": "ok", "host": "{{ ansible_hostname }}"}';
-        add_header Content-Type application/json;
+        default_type application/json;
+        return 200 '{"status":"ok","app":"{{ app_name }}","environment":"{{ app_environment }}","host":"{{ inventory_hostname }}"}';
     }
 }
 ```
 
-**roles/nginx/handlers/main.yml** :
-```yaml
----
-- name: restart nginx
-  shell: nginx -g 'daemon off;' &
-  async: 10
-  poll: 0
+**roles/nginx/templates/index.html.j2** :
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ app_name }} - {{ app_environment }}</title>
+</head>
+<body>
+  <h1>{{ app_name }}</h1>
+  <p>Environnement : {{ app_environment }}</p>
+  <p>Conteneur : {{ inventory_hostname }}</p>
+  <p>URL publique : {{ public_url }}</p>
+</body>
+</html>
 ```
 
-### 6. Playbook principal avec roles
+### 5. Playbook principal
 
 Créer `infra/ansible/site.yml` :
 
 ```yaml
 ---
-- name: Configuration commune
-  hosts: all
-  become: true
+- import_playbook: bootstrap-python.yml
+
+- name: Configurer les serveurs web provisionnés par Terraform
+  hosts: webservers
+  gather_facts: false
   roles:
     - base
-
-- name: Serveurs web
-  hosts: webservers
-  become: true
-  roles:
     - nginx
-
-- name: Serveurs d'application
-  hosts: appservers
-  become: true
-  roles:
-    - app
 ```
 
-### 7. Démontrer l'idempotence
+### 6. Exécuter et vérifier
 
 ```bash
-# Première exécution : tout change
+# Première exécution : Ansible installe et configure
 ansible-playbook -i inventory.yml site.yml
 
-# Deuxième exécution : rien ne change (idempotent !)
+# Deuxième exécution : rien ne doit changer
 ansible-playbook -i inventory.yml site.yml
-# → changed=0
+# Résultat attendu : changed=0 sur les conteneurs déjà configurés
+
+# Vérification fonctionnelle
+curl http://localhost:8080/
+curl http://localhost:8081/
+curl http://localhost:8080/health
+curl http://localhost:8081/health
 ```
 
+### 7. Modifier une variable pour observer les handlers
+
+Dans `inventory.yml`, changer par exemple :
+
+```yaml
+app_log_level: debug
+```
+
+Relancer :
+
+```bash
+ansible-playbook -i inventory.yml site.yml
+ansible-playbook -i inventory.yml site.yml
+```
+
+Observer :
+
+- le fichier `/opt/app/.env` change au premier run
+- le second run redevient idempotent
+- le handler `reload nginx` ne se déclenche que si la configuration Nginx change
+
 ## Livrable
-- Inventaire avec 2 groupes de hosts
-- Playbook de base avec variables et handlers
-- Au moins 2 roles structurés (base + nginx)
-- Démonstration de l'idempotence (2 runs identiques)
+
+- Inventaire Ansible ciblant les conteneurs créés par Terraform
+- Playbook `bootstrap-python.yml`
+- Playbook principal `site.yml`
+- Roles `base` et `nginx`
+- Preuve d'idempotence : deuxième exécution avec `changed=0`
+- Vérification HTTP sur les deux URLs Terraform (`8080` et `8081`)
 
 ## Aide
 
 ### Commandes utiles
+
 ```bash
 # Vérifier la syntaxe
-ansible-playbook --syntax-check playbook.yml
+ansible-playbook --syntax-check -i inventory.yml site.yml
 
-# Dry run (check mode)
-ansible-playbook -i inventory.yml playbook.yml --check
-
-# Limiter à un host
-ansible-playbook -i inventory.yml site.yml --limit ansible-node1
-
-# Verbose
-ansible-playbook -i inventory.yml site.yml -vvv
+# Lister les hosts
+ansible-inventory -i inventory.yml --graph
 
 # Lister les tâches
 ansible-playbook -i inventory.yml site.yml --list-tasks
+
+# Limiter à un conteneur
+ansible-playbook -i inventory.yml site.yml --limit devops-app-dev-0
+
+# Mode verbeux
+ansible-playbook -i inventory.yml site.yml -vvv
+```
+
+### Si les noms ne correspondent pas
+
+Si vous avez changé `app_name`, `environment`, `web_port` ou `web_replicas` dans Terraform, adaptez `inventory.yml` avec les vrais noms :
+
+```bash
+docker ps --format "{{.Names}}"
 ```
 
 ### Nettoyage
+
+Le nettoyage reste côté Terraform :
+
 ```bash
-docker compose down
+cd ../terraform/environments/dev
+terraform destroy -var-file="terraform.tfvars" -var="db_password=secret123"
 ```

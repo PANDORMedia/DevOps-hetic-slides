@@ -1,4 +1,4 @@
-# DevOps Avancé — Support étudiant
+# DevOps Avancé - Support étudiant
 
 Ce dépôt contient uniquement les éléments destinés aux étudiants :
 
@@ -10,7 +10,7 @@ Ce dépôt contient uniquement les éléments destinés aux étudiants :
 ## Contenu
 
 - **Jour 1** : CI/CD avancé, Terraform, Ansible
-- **Jour 2** : Docker avancé, Kubernetes, monitoring
+- **Jour 2** : Inventaire dynamique Terraform + Ansible, image Docker pour Kubernetes, Kubernetes avec Terraform, Helm, monitoring
 - **Jour 3** : DevSecOps, GitOps, patterns cloud-native
 
 ## Lancer les slides en local

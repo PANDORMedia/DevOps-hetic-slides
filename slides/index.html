@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevOps Avancé — CI/CD, IaC, K8s & DevSecOps | Formation</title>
+  <title>DevOps Avancé - CI/CD, IaC, K8s & DevSecOps | Formation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -374,6 +374,92 @@
       font-size: 1.2em;
     }
 
+    .k8s-logo-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 360px;
+      border: 1px solid rgba(59, 130, 246, 0.28);
+      border-radius: 16px;
+      background: rgba(17, 24, 39, 0.72);
+      padding: 28px;
+    }
+    .k8s-logo {
+      width: min(260px, 70%);
+      height: auto;
+      filter: drop-shadow(0 0 22px rgba(59, 130, 246, 0.28));
+      margin-bottom: 18px;
+    }
+    .k8s-logo-caption {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.45em;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .concept-tile {
+      min-height: 130px;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      background: rgba(17, 24, 39, 0.82);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .concept-tile strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .concept-tile span {
+      color: var(--text-secondary);
+      font-size: 0.92em;
+      line-height: 1.45;
+    }
+    .reconcile-loop {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+      margin: 28px 0;
+    }
+    .reconcile-step {
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      background: rgba(17, 24, 39, 0.82);
+      padding: 18px;
+      text-align: center;
+      position: relative;
+    }
+    .reconcile-step::after {
+      content: '→';
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 1.1em;
+    }
+    .reconcile-step:last-child::after { content: ''; }
+    .reconcile-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+    .reconcile-step span {
+      color: var(--text-secondary);
+      font-size: 0.88em;
+      line-height: 1.45;
+    }
+
     /* Pipeline diagram */
     .pipeline {
       display: flex;
@@ -606,6 +692,10 @@
       .slide { padding: 32px 24px; }
       .two-cols { grid-template-columns: 1fr; }
       .three-cols { grid-template-columns: 1fr; }
+      .concept-grid { grid-template-columns: 1fr; }
+      .reconcile-loop { grid-template-columns: 1fr; }
+      .reconcile-step::after { content: '↓'; right: 50%; top: auto; bottom: -18px; transform: translateX(50%); }
+      .reconcile-step:last-child::after { content: ''; }
       .pipeline { flex-wrap: wrap; }
       .tp-panel { width: 100%; }
     }
@@ -619,9 +709,9 @@
 <header class="header">
   <div class="header-left">
     <span class="logo">DEVOPS</span>
-    <button class="day-btn active" data-day="1">J1 — CI/CD & IaC</button>
-    <button class="day-btn" data-day="2">J2 — K8s & Monitoring</button>
-    <button class="day-btn" data-day="3">J3 — DevSecOps</button>
+    <button class="day-btn active" data-day="1">J1 - CI/CD & IaC</button>
+    <button class="day-btn" data-day="2">J2 - K8s & Monitoring</button>
+    <button class="day-btn" data-day="3">J3 - DevSecOps</button>
   </div>
   <div class="header-right">
     <button class="ctrl-btn" id="tpBtn" title="Panneau TP (T)" disabled>TP</button>
@@ -644,14 +734,14 @@
 <div class="slides-wrapper" id="slidesWrapper">
 
   <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- JOUR 1 — CI/CD avancé & Infrastructure as Code            -->
+  <!-- JOUR 1 - CI/CD avancé & Infrastructure as Code            -->
   <!-- ══════════════════════════════════════════════════════════ -->
 
-  <!-- J1.00 — Title -->
+  <!-- J1.00 - Title -->
   <div class="slide hero" data-day="1">
     <div class="slide-number">J1.00</div>
     <div class="slide-title accent">DevOps Avancé</div>
-    <p class="slide-subtitle">CI/CD, Infrastructure as Code, Kubernetes, Monitoring & DevSecOps — 3 jours pour maîtriser le cycle complet</p>
+    <p class="slide-subtitle">CI/CD, Infrastructure as Code, Kubernetes, Monitoring & DevSecOps - 3 jours pour maîtriser le cycle complet</p>
     <div style="margin-top: 24px;">
       <span class="tag cyan">CI/CD</span>
       <span class="tag blue">Terraform</span>
@@ -662,7 +752,7 @@
     </div>
   </div>
 
-  <!-- J1.01 — Roadmap 3 jours -->
+  <!-- J1.01 - Roadmap 3 jours -->
   <div class="slide" data-day="1">
     <div class="slide-number">J1.01</div>
     <div class="slide-title">Ce qu'on va voir ensemble</div>
@@ -670,32 +760,32 @@
 
     <div class="three-cols" style="margin-top: 20px;">
       <div class="card cyan">
-        <h4>Jour 1 — CI/CD & IaC</h4>
+        <h4>Jour 1 - CI/CD & IaC</h4>
         <ul>
           <li>Pipelines CI/CD multi-stages</li>
           <li>GitHub Actions avancé</li>
-          <li>Terraform — infra déclarative</li>
-          <li>Ansible — config management</li>
+          <li>Terraform - infra déclarative</li>
+          <li>Ansible - config management</li>
         </ul>
         <p style="margin-top:12px;"><span class="tag cyan">Automatiser</span></p>
       </div>
       <div class="card emerald">
-        <h4>Jour 2 — Conteneurs & Monitoring</h4>
+        <h4>Jour 2 - Conteneurs & Monitoring</h4>
         <ul>
           <li>Docker multi-stage & sécurité</li>
-          <li>Kubernetes — orchestration</li>
-          <li>Helm & Kustomize</li>
+          <li>Kubernetes - orchestration</li>
+          <li>Helm & Terraform</li>
           <li>Prometheus & Grafana</li>
         </ul>
         <p style="margin-top:12px;"><span class="tag emerald">Orchestrer & Observer</span></p>
       </div>
       <div class="card violet">
-        <h4>Jour 3 — DevSecOps & Cloud</h4>
+        <h4>Jour 3 - DevSecOps & Cloud</h4>
         <ul>
           <li>Scan de sécurité (Trivy, OPA)</li>
           <li>GitOps avec ArgoCD</li>
           <li>Patterns cloud-native</li>
-          <li>Projet final — pipeline E2E</li>
+          <li>Projet final - pipeline E2E</li>
         </ul>
         <p style="margin-top:12px;"><span class="tag violet">Sécuriser & Livrer</span></p>
       </div>
@@ -710,7 +800,7 @@
     </div>
   </div>
 
-  <!-- J1.02 — La boîte à outils -->
+  <!-- J1.02 - La boîte à outils -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/00-environnement.md">
     <div class="slide-number">J1.02</div>
@@ -753,7 +843,7 @@
     </div>
   </div>
 
-  <!-- J1.03 — État de l'art DevOps -->
+  <!-- J1.03 - État de l'art DevOps -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/00-environnement.md">
     <div class="slide-number">J1.03</div>
@@ -762,10 +852,10 @@
       <div>
         <h3>Le mouvement DevOps</h3>
         <ul>
-          <li><strong>Culture</strong> — collaboration Dev + Ops, boucles de feedback</li>
-          <li><strong>Automatisation</strong> — tout ce qui peut être automatisé doit l'être</li>
-          <li><strong>Mesure</strong> — DORA metrics : fréquence de déploiement, lead time, MTTR, taux d'échec</li>
-          <li><strong>Partage</strong> — documentation, post-mortems, retrospectives</li>
+          <li><strong>Culture</strong> - collaboration Dev + Ops, boucles de feedback</li>
+          <li><strong>Automatisation</strong> - tout ce qui peut être automatisé doit l'être</li>
+          <li><strong>Mesure</strong> - DORA metrics : fréquence de déploiement, lead time, MTTR, taux d'échec</li>
+          <li><strong>Partage</strong> - documentation, post-mortems, retrospectives</li>
         </ul>
         <div class="info-box tip">
           <strong>CALMS</strong> : Culture, Automation, Lean, Measurement, Sharing
@@ -774,17 +864,17 @@
       <div>
         <h3>Tendances 2026</h3>
         <ul>
-          <li><em>Platform Engineering</em> — portails développeur (Backstage)</li>
-          <li><em>GitOps</em> — Git comme source de vérité</li>
-          <li><em>DevSecOps</em> — sécurité shift-left</li>
-          <li><em>FinOps</em> — optimisation des coûts cloud</li>
-          <li><em>AI/ML Ops</em> — intégration de l'IA dans les pipelines</li>
+          <li><em>Platform Engineering</em> - portails développeur (Backstage)</li>
+          <li><em>GitOps</em> - Git comme source de vérité</li>
+          <li><em>DevSecOps</em> - sécurité shift-left</li>
+          <li><em>FinOps</em> - optimisation des coûts cloud</li>
+          <li><em>AI/ML Ops</em> - intégration de l'IA dans les pipelines</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- J1.04 — Pipeline Overview -->
+  <!-- J1.04 - Pipeline Overview -->
   <div class="slide" data-day="1">
     <div class="slide-number">J1.04</div>
     <div class="slide-title">Anatomie d'un pipeline CI/CD</div>
@@ -804,17 +894,17 @@
 
     <div class="two-cols" style="margin-top: 32px;">
       <div class="card cyan">
-        <h4>CI — Intégration Continue</h4>
+        <h4>CI - Intégration Continue</h4>
         <p>Build + Test automatiques à chaque commit. Feedback en minutes, pas en jours.</p>
       </div>
       <div class="card emerald">
-        <h4>CD — Livraison / Déploiement Continu</h4>
+        <h4>CD - Livraison / Déploiement Continu</h4>
         <p><strong>Continuous Delivery</strong> = prêt à déployer. <strong>Continuous Deployment</strong> = déploiement automatique en prod.</p>
       </div>
     </div>
   </div>
 
-  <!-- J1.03 — Pipeline multi-stages -->
+  <!-- J1.03 - Pipeline multi-stages -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/01-pipeline-cicd.md">
     <div class="slide-number">J1.05</div>
@@ -823,11 +913,11 @@
       <div>
         <h3>Principes avancés</h3>
         <ul>
-          <li><strong>Parallélisme</strong> — exécuter les jobs indépendants en parallèle</li>
-          <li><strong>Cache</strong> — réutiliser les dépendances entre runs</li>
-          <li><strong>Matrix builds</strong> — tester sur plusieurs versions/OS</li>
-          <li><strong>Artefacts</strong> — passer des résultats entre stages</li>
-          <li><strong>Environnements</strong> — staging, production avec approval gates</li>
+          <li><strong>Parallélisme</strong> - exécuter les jobs indépendants en parallèle</li>
+          <li><strong>Cache</strong> - réutiliser les dépendances entre runs</li>
+          <li><strong>Matrix builds</strong> - tester sur plusieurs versions/OS</li>
+          <li><strong>Artefacts</strong> - passer des résultats entre stages</li>
+          <li><strong>Environnements</strong> - staging, production avec approval gates</li>
         </ul>
         <div class="info-box tip">
           <strong>Règle d'or</strong> : sur une pull request, viser un feedback en moins de 10 minutes. Au-delà, optimiser.
@@ -855,7 +945,7 @@
     </div>
   </div>
 
-  <!-- J1.04 — GitHub Actions avancé -->
+  <!-- J1.04 - GitHub Actions avancé -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/02-github-actions.md">
     <div class="slide-number">J1.06</div>
@@ -884,16 +974,16 @@ on:
           <tr><td><code>production</code></td><td>Review + timer 5 min</td></tr>
         </table>
         <div class="info-box warning">
-          <strong>Secrets</strong> : ne JAMAIS les mettre dans le code. Utiliser <code>${{ secrets.X }}</code> — GitHub les masque automatiquement dans les logs.
+          <strong>Secrets</strong> : ne JAMAIS les mettre dans le code. Utiliser <code>${{ secrets.X }}</code> - GitHub les masque automatiquement dans les logs.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- J1.05 — Introduction Terraform -->
+  <!-- J1.05 - Introduction Terraform -->
   <div class="slide" data-day="1">
     <div class="slide-number">J1.07</div>
-    <div class="slide-title">Infrastructure as Code — Terraform</div>
+    <div class="slide-title">Infrastructure as Code - Terraform</div>
     <p class="slide-subtitle">Décrire, versionner et automatiser votre infrastructure</p>
 
     <div class="diagram">
@@ -922,11 +1012,11 @@ on:
     </div>
   </div>
 
-  <!-- J1.06 — Terraform HCL -->
+  <!-- J1.06 - Terraform HCL -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/03-terraform-init.md">
     <div class="slide-number">J1.08</div>
-    <div class="slide-title">Terraform — Syntaxe HCL</div>
+    <div class="slide-title">Terraform - Syntaxe HCL</div>
     <div class="two-cols">
       <div>
         <h3>Blocs fondamentaux</h3>
@@ -973,11 +1063,11 @@ output "url" {
     </div>
   </div>
 
-  <!-- J1.07 — Terraform Modules -->
+  <!-- J1.07 - Terraform Modules -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/04-terraform-modules.md">
     <div class="slide-number">J1.09</div>
-    <div class="slide-title">Terraform — Modules & Remote State</div>
+    <div class="slide-title">Terraform - Modules & Remote State</div>
     <div class="two-cols">
       <div>
         <h3>Modules réutilisables</h3>
@@ -1014,10 +1104,10 @@ module "webapp" {
     </div>
   </div>
 
-  <!-- J1.08 — Ansible Introduction -->
+  <!-- J1.08 - Ansible Introduction -->
   <div class="slide" data-day="1">
     <div class="slide-number">J1.10</div>
-    <div class="slide-title">Ansible — Configuration Management</div>
+    <div class="slide-title">Ansible - Configuration Management</div>
     <p class="slide-subtitle">Automatiser la configuration de vos serveurs de manière idempotente</p>
 
     <div class="diagram">
@@ -1046,11 +1136,11 @@ module "webapp" {
     </div>
   </div>
 
-  <!-- J1.09 — Ansible Playbooks -->
+  <!-- J1.09 - Ansible Playbooks -->
   <div class="slide" data-day="1"
        data-exercise="../exercises/05-ansible-playbook.md">
     <div class="slide-number">J1.11</div>
-    <div class="slide-title">Ansible — Playbooks & Roles</div>
+    <div class="slide-title">Ansible - Playbooks & Roles</div>
     <div class="two-cols">
       <div>
         <h3>Playbook type</h3>
@@ -1099,7 +1189,7 @@ module "webapp" {
     </div>
   </div>
 
-  <!-- J1.10 — Retro J1 -->
+  <!-- J1.10 - Retro J1 -->
   <div class="slide hero" data-day="1">
     <div class="slide-number">J1.12</div>
     <div class="slide-title">Rétrospective Jour 1</div>
@@ -1119,67 +1209,227 @@ module "webapp" {
       </div>
     </div>
     <div class="info-box tip" style="margin-top: 32px; max-width: 600px;">
-      <strong>Demain</strong> : Docker avancé, Kubernetes, Prometheus & Grafana
+      <strong>Demain</strong> : Inventaire dynamique, image Docker, Kubernetes, Prometheus & Grafana
     </div>
   </div>
 
 
   <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- JOUR 2 — Conteneurs, Orchestration & Monitoring           -->
+  <!-- JOUR 2 - Conteneurs, Orchestration & Monitoring           -->
   <!-- ══════════════════════════════════════════════════════════ -->
 
-  <!-- J2.00 — Title -->
+  <!-- J2.00 - Title -->
   <div class="slide hero" data-day="2">
     <div class="slide-number">J2.00</div>
-    <div class="slide-title accent">Jour 2 — Conteneurs & Orchestration</div>
-    <p class="slide-subtitle">Docker avancé, Kubernetes, Monitoring avec Prometheus & Grafana</p>
+    <div class="slide-title accent">Jour 2 - Conteneurs & Orchestration</div>
+    <p class="slide-subtitle">Inventaire dynamique, image Docker, Kubernetes, Monitoring avec Prometheus & Grafana</p>
   </div>
 
-  <!-- J2.01 — Docker avancé -->
+  <!-- J2.01 - Inventaire dynamique -->
   <div class="slide" data-day="2"
-       data-exercise="../exercises/06-docker-avance.md">
+       data-exercise="../exercises/06-inventaire-dynamique.md">
     <div class="slide-number">J2.01</div>
-    <div class="slide-title">Docker avancé — Optimisation</div>
+    <div class="slide-title">Terraform + Ansible - Inventaire dynamique</div>
     <div class="two-cols">
       <div>
-        <h3>Multi-stage builds</h3>
-        <pre><code># Stage 1 : Build
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm test
-
-# Stage 2 : Production
-FROM node:20-alpine
-USER node
-COPY --from=builder /app/src ./src
-EXPOSE 3000
-HEALTHCHECK --interval=30s \
-  CMD wget -q --spider http://localhost:3000
-CMD ["node", "src/index.js"]</code></pre>
+        <h3>Terraform publie l'inventaire</h3>
+        <pre><code>output "ansible_inventory" {
+  value = yamlencode({
+    all = {
+      vars = {
+        ansible_connection = "docker"
+        app_environment    = var.environment
+        app_log_level      = var.app_log_level
+      }
+      children = {
+        webservers = {
+          hosts = module.webapp.ansible_hosts
+        }
+        databases = {
+          hosts = {
+            (module.database.ansible_host.name) = {}
+          }
+        }
+      }
+    }
+  })
+}</code></pre>
       </div>
       <div>
-        <h3>Checklist sécurité</h3>
+        <h3>Workflow attendu</h3>
         <ul>
-          <li><strong>Base minimale</strong> — choisir l'image la plus petite adaptée au runtime (<code>alpine</code>, <code>slim</code>, distroless...)</li>
-          <li><strong>User non-root</strong> — <code>USER node</code> obligatoire</li>
-          <li><strong>HEALTHCHECK</strong> — pour l'orchestrateur</li>
-          <li><strong>.dockerignore</strong> — exclure node_modules, .git, .env</li>
-          <li><strong>Pas de :latest</strong> — toujours un tag versionné</li>
+          <li><strong>Source de vérité</strong> - Terraform connaît les conteneurs réels</li>
+          <li><strong>Inventaire généré</strong> - <code>inventory.yml</code> n'est plus édité à la main</li>
+          <li><strong>Variables partagées</strong> - environnement, log level, database host</li>
+          <li><strong>Preuve</strong> - passer <code>web_replicas</code> à 3 sans toucher Ansible</li>
         </ul>
+        <pre><code>terraform output -raw ansible_inventory \
+  &gt; inventory.yml
+ansible-inventory -i inventory.yml --graph
+ansible-playbook -i inventory.yml site.yml</code></pre>
         <div class="info-box success">
-          <strong>Résultat</strong> : 500 MB → 80 MB, surface d'attaque réduite de 90%
+          <strong>Résultat</strong> : Ansible suit Terraform sans noms codés en dur.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- J2.02 — Kubernetes Architecture -->
+  <!-- J2.01b - Image Docker pour Kubernetes -->
+  <div class="slide" data-day="2"
+       data-exercise="../exercises/06b-image-docker-kubernetes.md">
+    <div class="slide-number">J2.01b</div>
+    <div class="slide-title">Image Docker pour Kubernetes</div>
+    <div class="two-cols">
+      <div>
+        <h3>Artefact applicatif</h3>
+        <pre><code>docker build -t devops-app:1.0.0 starter-code/app
+
+docker run --rm -d \
+  --name devops-app-image-check \
+  -p 18080:3000 \
+  devops-app:1.0.0
+
+curl http://localhost:18080/health
+docker stop devops-app-image-check</code></pre>
+      </div>
+      <div>
+        <h3>Image visible par le cluster</h3>
+        <pre><code># minikube
+minikube image load devops-app:1.0.0
+minikube image ls | grep devops-app
+
+# kind
+kind load docker-image devops-app:1.0.0 \
+  --name devops-training</code></pre>
+        <div class="info-box warning">
+          <strong>Point clé</strong> : si l'image n'est pas dans le runtime du cluster, le Deployment du 07 finira en <code>ImagePullBackOff</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- J2.01c - Kubernetes c'est quoi -->
+  <div class="slide" data-day="2">
+    <div class="slide-number">J2.01c</div>
+    <div class="slide-title">Kubernetes - C'est quoi ?</div>
+    <div class="two-cols">
+      <div class="k8s-logo-panel">
+        <svg class="k8s-logo" viewBox="0 0 160 160" role="img" aria-label="Logo Kubernetes">
+          <polygon points="80,8 142,44 142,116 80,152 18,116 18,44" fill="#326ce5" stroke="#7dd3fc" stroke-width="2"/>
+          <g stroke="#ffffff" stroke-width="6" stroke-linecap="round">
+            <line x1="80" y1="80" x2="80" y2="35"/>
+            <line x1="80" y1="80" x2="115" y2="52"/>
+            <line x1="80" y1="80" x2="123" y2="91"/>
+            <line x1="80" y1="80" x2="99" y2="121"/>
+            <line x1="80" y1="80" x2="61" y2="121"/>
+            <line x1="80" y1="80" x2="37" y2="91"/>
+            <line x1="80" y1="80" x2="45" y2="52"/>
+          </g>
+          <circle cx="80" cy="80" r="42" fill="none" stroke="#ffffff" stroke-width="7"/>
+          <circle cx="80" cy="80" r="12" fill="#ffffff"/>
+        </svg>
+        <div class="k8s-logo-caption">Kubernetes</div>
+        <p style="text-align:center; margin-top: 8px;">Orchestrateur de conteneurs</p>
+      </div>
+      <div>
+        <h3>Une plateforme de contrôle</h3>
+        <ul>
+          <li><strong>Cluster</strong> - plusieurs machines vues comme une seule plateforme</li>
+          <li><strong>API déclarative</strong> - on décrit l'état attendu, pas chaque commande</li>
+          <li><strong>Contrôleurs</strong> - Kubernetes compare le réel avec le souhaité</li>
+          <li><strong>Runtime</strong> - il démarre, remplace, expose et met à jour les pods</li>
+        </ul>
+        <div class="info-box tip">
+          <strong>Traduction</strong> : Kubernetes transforme une image Docker en service maintenu dans le temps.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- J2.01d - Pourquoi Kubernetes -->
+  <div class="slide" data-day="2">
+    <div class="slide-number">J2.01d</div>
+    <div class="slide-title">Pourquoi Kubernetes ?</div>
+    <p class="slide-subtitle">Passer de conteneurs lancés à la main à une plateforme qui maintient un service.</p>
+    <div class="diagram">
+      <div class="node cyan">Image<br><small>devops-app:1.0.0</small></div>
+      <span class="arrow">→</span>
+      <div class="node blue">Pods<br><small>instances éphémères</small></div>
+      <span class="arrow">→</span>
+      <div class="node emerald">Deployment<br><small>replicas + rollout</small></div>
+      <span class="arrow">→</span>
+      <div class="node amber">Service<br><small>DNS stable</small></div>
+      <span class="arrow">→</span>
+      <div class="node violet">Utilisateurs</div>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-tile"><strong>Self-healing</strong><span>Un pod mort est recréé automatiquement.</span></div>
+      <div class="concept-tile"><strong>Scaling</strong><span>Le nombre d'instances devient une valeur déclarée.</span></div>
+      <div class="concept-tile"><strong>Rollout</strong><span>Les versions changent progressivement avec rollback possible.</span></div>
+      <div class="concept-tile"><strong>Service discovery</strong><span>Les pods changent, le nom réseau reste stable.</span></div>
+    </div>
+  </div>
+
+  <!-- J2.01e - Philosophie déclarative -->
+  <div class="slide" data-day="2">
+    <div class="slide-number">J2.01e</div>
+    <div class="slide-title">La philosophie Kubernetes</div>
+    <div class="two-cols">
+      <div>
+        <h3>Impératif</h3>
+        <pre><code>docker run devops-app:1.0.0
+docker run devops-app:1.0.0
+docker run devops-app:1.0.0
+
+# Si un conteneur tombe :
+docker run devops-app:1.0.0</code></pre>
+        <div class="info-box warning">
+          <strong>Fragile</strong> : la procédure dépend de l'humain ou d'un script externe.
+        </div>
+      </div>
+      <div>
+        <h3>Déclaratif</h3>
+        <pre><code>apiVersion: apps/v1
+kind: Deployment
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - image: devops-app:1.0.0</code></pre>
+        <div class="info-box success">
+          <strong>Robuste</strong> : Kubernetes maintient l'état déclaré en continu.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- J2.01f - Boucle de reconciliation -->
+  <div class="slide" data-day="2">
+    <div class="slide-number">J2.01f</div>
+    <div class="slide-title">Le cœur : la boucle de réconciliation</div>
+    <div class="reconcile-loop">
+      <div class="reconcile-step"><strong>1. Déclarer</strong><span>YAML, kubectl ou Terraform</span></div>
+      <div class="reconcile-step"><strong>2. Stocker</strong><span>API Server + etcd</span></div>
+      <div class="reconcile-step"><strong>3. Observer</strong><span>État réel du cluster</span></div>
+      <div class="reconcile-step"><strong>4. Corriger</strong><span>Contrôleurs + Scheduler</span></div>
+      <div class="reconcile-step"><strong>5. Exécuter</strong><span>Kubelet démarre les pods</span></div>
+    </div>
+    <div class="two-cols">
+      <div class="info-box tip">
+        <strong>Desired state</strong> : "je veux 3 replicas de cette image, exposés par ce Service".
+      </div>
+      <div class="info-box success">
+        <strong>Current state</strong> : Kubernetes agit tant que le réel ne correspond pas au souhaité.
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 18px;">C'est la même logique que Terraform, mais appliquée en continu au runtime.</p>
+  </div>
+
+  <!-- J2.02 - Kubernetes Architecture -->
   <div class="slide" data-day="2">
     <div class="slide-number">J2.02</div>
-    <div class="slide-title">Kubernetes — Architecture</div>
+    <div class="slide-title">Kubernetes - Architecture</div>
     <p class="slide-subtitle">Orchestrer vos conteneurs à l'échelle</p>
 
     <div class="diagram">
@@ -1214,11 +1464,11 @@ CMD ["node", "src/index.js"]</code></pre>
     </div>
   </div>
 
-  <!-- J2.03 — Kubernetes Ressources -->
+  <!-- J2.03 - Kubernetes Ressources -->
   <div class="slide" data-day="2"
        data-exercise="../exercises/07-kubernetes-deploy.md">
     <div class="slide-number">J2.03</div>
-    <div class="slide-title">Kubernetes — Ressources essentielles</div>
+    <div class="slide-title">Kubernetes - Ressources essentielles</div>
     <div class="two-cols">
       <div>
         <h3>Manifeste Deployment</h3>
@@ -1262,43 +1512,44 @@ spec:
           <tr><td><code>HPA</code></td><td>Autoscaling horizontal</td></tr>
         </table>
         <div class="info-box tip">
-          <strong>Probes</strong> : <code>readinessProbe</code> = prêt à recevoir du trafic. <code>livenessProbe</code> = toujours vivant, sinon restart.
+          <strong>Suite du 06</strong> : <code>app_log_level</code> → ConfigMap, <code>database_host</code> → Service DNS, <code>web_replicas</code> → Deployment.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- J2.04 — kubectl -->
+  <!-- J2.04 - kubectl -->
   <div class="slide" data-day="2">
     <div class="slide-number">J2.04</div>
-    <div class="slide-title">kubectl — Commandes essentielles</div>
+    <div class="slide-title">kubectl - Commandes essentielles</div>
     <div class="two-cols">
       <div>
         <h3>Déployer et observer</h3>
         <div class="terminal">
-          <span class="prompt">$</span> kubectl apply -f k8s/<br>
-          <span class="output">deployment/my-app created</span><br>
-          <span class="output">service/my-app-svc created</span><br><br>
-          <span class="prompt">$</span> kubectl get pods -w<br>
+          <span class="prompt">$</span> terraform apply<br>
+          <span class="output">namespace/devops-training created</span><br>
+          <span class="output">deployment/devops-app created</span><br>
+          <span class="output">service/devops-app-svc created</span><br><br>
+          <span class="prompt">$</span> kubectl get pods -n devops-training -w<br>
           <span class="output">NAME          READY   STATUS    RESTARTS</span><br>
-          <span class="output">my-app-abc    1/1     Running   0</span><br>
-          <span class="output">my-app-def    1/1     Running   0</span><br>
-          <span class="output">my-app-ghi    1/1     Running   0</span><br><br>
-          <span class="prompt">$</span> kubectl logs -l app=my-app --tail=20<br>
-          <span class="prompt">$</span> kubectl port-forward svc/my-app-svc 8080:80
+          <span class="output">devops-app-abc    1/1     Running   0</span><br>
+          <span class="output">devops-app-def    1/1     Running   0</span><br>
+          <span class="output">devops-app-ghi    1/1     Running   0</span><br><br>
+          <span class="prompt">$</span> kubectl logs -n devops-training -l app=devops-app --tail=20<br>
+          <span class="prompt">$</span> kubectl port-forward -n devops-training svc/devops-app-svc 18080:80
         </div>
       </div>
       <div>
         <h3>Scaling & Rolling Updates</h3>
         <div class="terminal">
-          <span class="prompt"># Scaler à 5 replicas</span><br>
-          <span class="prompt">$</span> kubectl scale deploy my-app --replicas=5<br><br>
-          <span class="prompt"># Mettre à jour l'image</span><br>
-          <span class="prompt">$</span> kubectl set image deploy/my-app app=my-app:v2<br><br>
-          <span class="prompt"># Suivre le rollout</span><br>
-          <span class="prompt">$</span> kubectl rollout status deploy/my-app<br><br>
-          <span class="prompt"># Rollback si problème</span><br>
-          <span class="prompt">$</span> kubectl rollout undo deploy/my-app
+          <span class="prompt"># Scaler via Terraform</span><br>
+          <span class="prompt">$</span> terraform apply -var="app_replicas=5"<br><br>
+          <span class="prompt"># Drift manuel</span><br>
+          <span class="prompt">$</span> kubectl scale deploy/devops-app --replicas=2 -n devops-training<br>
+          <span class="prompt">$</span> terraform plan<br><br>
+          <span class="prompt"># Rolling update déclaratif</span><br>
+          <span class="prompt">$</span> terraform apply -var="image_tag=1.0.1"<br>
+          <span class="prompt">$</span> kubectl rollout status deploy/devops-app -n devops-training
         </div>
         <div class="info-box warning">
           <strong>Rolling Update</strong> : <code>maxSurge=1</code> et <code>maxUnavailable=0</code> réduisent fortement le risque d'interruption, à condition d'avoir des probes fiables et assez de capacité.
@@ -1307,14 +1558,14 @@ spec:
     </div>
   </div>
 
-  <!-- J2.05 — Helm -->
+  <!-- J2.05 - Helm -->
   <div class="slide" data-day="2"
        data-exercise="../exercises/08-helm-charts.md">
     <div class="slide-number">J2.05</div>
-    <div class="slide-title">Helm & Kustomize</div>
+    <div class="slide-title">Helm & Terraform</div>
     <div class="two-cols">
       <div>
-        <h3>Helm — Package manager K8s</h3>
+        <h3>Helm - Package manager K8s</h3>
         <pre><code># Créer un chart
 helm create my-app/
 
@@ -1329,29 +1580,38 @@ helm upgrade my-release ./my-app \
 
 # Rollback
 helm rollback my-release 1</code></pre>
-        <p><strong>Chart</strong> = templates + values par défaut. Chaque env a son <code>values-{env}.yaml</code>.</p>
+        <p><strong>Chart</strong> = templates + values par défaut. Le contrat du 07 devient <code>replicaCount</code>, <code>config.appLogLevel</code> et <code>config.dbHost</code>.</p>
       </div>
       <div>
-        <h3>Kustomize — Overlays natifs</h3>
-        <pre><code>base/
-  deployment.yaml
-  service.yaml
-  kustomization.yaml
-overlays/
-  dev/
-    kustomization.yaml   # namePrefix: dev-
-    replicas-patch.yaml  # replicas: 1
-  prod/
-    kustomization.yaml   # namePrefix: prod-
-    replicas-patch.yaml  # replicas: 5</code></pre>
+        <h3>Terraform - helm_release</h3>
+        <pre><code>resource "helm_release" "app" {
+  name             = "devops-app"
+  chart            = "../devops-app-chart"
+  namespace        = "devops-helm"
+  create_namespace = true
+
+  values = [
+    file("../values-dev.yaml")
+  ]
+
+  set {
+    name  = "image.tag"
+    value = "1.0.0"
+  }
+
+  set {
+    name  = "config.appLogLevel"
+    value = "debug"
+  }
+}</code></pre>
         <div class="info-box tip">
-          <strong>Helm vs Kustomize</strong> : Helm pour le templating complexe et les charts communautaires. Kustomize pour les overlays simples — intégré à kubectl.
+          <strong>Propriété</strong> : une release doit être gérée soit par Helm CLI, soit par Terraform. Sinon, on crée du drift et de la confusion.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- J2.06 — Monitoring intro -->
+  <!-- J2.06 - Monitoring intro -->
   <div class="slide" data-day="2">
     <div class="slide-number">J2.06</div>
     <div class="slide-title">Monitoring & Observabilité</div>
@@ -1376,15 +1636,15 @@ overlays/
     </div>
 
     <div class="info-box tip" style="margin-top: 24px;">
-      <strong>Golden Signals</strong> (Google SRE) : Latence, Trafic, Erreurs, Saturation — les 4 métriques à surveiller en priorité.
+      <strong>Golden Signals</strong> (Google SRE) : Latence, Trafic, Erreurs, Saturation - les 4 métriques à surveiller en priorité.
     </div>
   </div>
 
-  <!-- J2.07 — Prometheus -->
+  <!-- J2.07 - Prometheus -->
   <div class="slide" data-day="2"
        data-exercise="../exercises/09-prometheus-grafana.md">
     <div class="slide-number">J2.07</div>
-    <div class="slide-title">Prometheus — Métriques & Alerting</div>
+    <div class="slide-title">Prometheus - Métriques & Alerting</div>
     <div class="two-cols">
       <div>
         <h3>Architecture</h3>
@@ -1431,10 +1691,10 @@ sum(rate(http_requests{status=~"5.."}[5m]))
     </div>
   </div>
 
-  <!-- J2.08 — Grafana -->
+  <!-- J2.08 - Grafana -->
   <div class="slide" data-day="2">
     <div class="slide-number">J2.08</div>
-    <div class="slide-title">Grafana — Dashboards</div>
+    <div class="slide-title">Grafana - Dashboards</div>
     <div class="two-cols">
       <div>
         <h3>Dashboard type</h3>
@@ -1478,13 +1738,15 @@ providers:
     </div>
   </div>
 
-  <!-- J2.09 — Retro J2 -->
+  <!-- J2.09 - Retro J2 -->
   <div class="slide hero" data-day="2">
     <div class="slide-number">J2.09</div>
     <div class="slide-title">Rétrospective Jour 2</div>
-    <p class="slide-subtitle">Docker avancé + Kubernetes + Monitoring</p>
+    <p class="slide-subtitle">Terraform + Ansible + Image Docker + Kubernetes + Monitoring</p>
     <div class="pipeline" style="margin-top: 32px;">
-      <div class="stage cyan">Build<span class="stage-label">Docker multi-stage</span></div>
+      <div class="stage cyan">Inventory<span class="stage-label">Terraform + Ansible</span></div>
+      <div class="connector"></div>
+      <div class="stage amber">Image<span class="stage-label">devops-app:1.0.0</span></div>
       <div class="connector"></div>
       <div class="stage blue">Deploy<span class="stage-label">K8s + Helm</span></div>
       <div class="connector"></div>
@@ -1499,20 +1761,20 @@ providers:
 
 
   <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- JOUR 3 — DevSecOps & Cloud-Native                         -->
+  <!-- JOUR 3 - DevSecOps & Cloud-Native                         -->
   <!-- ══════════════════════════════════════════════════════════ -->
 
-  <!-- J3.00 — Title -->
+  <!-- J3.00 - Title -->
   <div class="slide hero" data-day="3">
     <div class="slide-number">J3.00</div>
-    <div class="slide-title accent">Jour 3 — DevSecOps & Cloud-Native</div>
+    <div class="slide-title accent">Jour 3 - DevSecOps & Cloud-Native</div>
     <p class="slide-subtitle">Sécurité shift-left, GitOps avec ArgoCD et patterns cloud-native</p>
   </div>
 
-  <!-- J3.01 — DevSecOps Principles -->
+  <!-- J3.01 - DevSecOps Principles -->
   <div class="slide" data-day="3">
     <div class="slide-number">J3.01</div>
-    <div class="slide-title">DevSecOps — Shift-Left Security</div>
+    <div class="slide-title">DevSecOps - Shift-Left Security</div>
     <p class="slide-subtitle">La sécurité est l'affaire de tous, pas seulement de l'équipe sécu</p>
 
     <div class="pipeline">
@@ -1542,10 +1804,10 @@ providers:
       <div>
         <h3>Supply Chain Security</h3>
         <ul>
-          <li><strong>SBOM</strong> — Software Bill of Materials</li>
-          <li><strong>Signatures</strong> — Cosign pour signer les images</li>
-          <li><strong>Provenance</strong> — SLSA framework</li>
-          <li><strong>Lock files</strong> — verrouiller les versions</li>
+          <li><strong>SBOM</strong> - Software Bill of Materials</li>
+          <li><strong>Signatures</strong> - Cosign pour signer les images</li>
+          <li><strong>Provenance</strong> - SLSA framework</li>
+          <li><strong>Lock files</strong> - verrouiller les versions</li>
         </ul>
         <div class="info-box danger">
           <strong>Supply chain attacks</strong> : SolarWinds, Log4Shell, xz-utils. Scanner n'est pas optionnel.
@@ -1554,14 +1816,14 @@ providers:
     </div>
   </div>
 
-  <!-- J3.02 — Trivy & scanning -->
+  <!-- J3.02 - Trivy & scanning -->
   <div class="slide" data-day="3"
        data-exercise="../exercises/10-devsecops-scan.md">
     <div class="slide-number">J3.02</div>
     <div class="slide-title">Scan & Conformité en pratique</div>
     <div class="two-cols">
       <div>
-        <h3>Trivy — Scanner universel</h3>
+        <h3>Trivy - Scanner universel</h3>
         <div class="terminal">
           <span class="prompt">$</span> trivy image my-app:1.0.0<br>
           <span class="output">Total: 3 (HIGH: 2, CRITICAL: 1)</span><br><br>
@@ -1574,7 +1836,7 @@ providers:
         </div>
       </div>
       <div>
-        <h3>OPA — Politiques as Code</h3>
+        <h3>OPA - Politiques as Code</h3>
         <pre><code>package kubernetes
 
 # Interdire les conteneurs privilégiés
@@ -1600,18 +1862,18 @@ deny[msg] {
     </div>
   </div>
 
-  <!-- J3.03 — GitOps Concepts -->
+  <!-- J3.03 - GitOps Concepts -->
   <div class="slide" data-day="3">
     <div class="slide-number">J3.03</div>
-    <div class="slide-title">GitOps — Git comme source de vérité</div>
+    <div class="slide-title">GitOps - Git comme source de vérité</div>
     <div class="two-cols">
       <div>
         <h3>Principes GitOps</h3>
         <ul>
-          <li><strong>Déclaratif</strong> — l'état souhaité est dans Git</li>
-          <li><strong>Versionné</strong> — chaque changement est un commit</li>
-          <li><strong>Pull automatique</strong> — l'agent sync le cluster</li>
-          <li><strong>Self-healing</strong> — dérive détectée → correction auto</li>
+          <li><strong>Déclaratif</strong> - l'état souhaité est dans Git</li>
+          <li><strong>Versionné</strong> - chaque changement est un commit</li>
+          <li><strong>Pull automatique</strong> - l'agent sync le cluster</li>
+          <li><strong>Self-healing</strong> - dérive détectée → correction auto</li>
         </ul>
         <div class="info-box tip">
           <strong>Push vs Pull</strong> : Push (CI pousse vers K8s) = credentials CI → risque. Pull (ArgoCD dans le cluster lit Git) = plus sûr.
@@ -1636,7 +1898,7 @@ deny[msg] {
     </div>
   </div>
 
-  <!-- J3.04 — ArgoCD -->
+  <!-- J3.04 - ArgoCD -->
   <div class="slide" data-day="3"
        data-exercise="../exercises/11-gitops-argocd.md">
     <div class="slide-number">J3.04</div>
@@ -1690,7 +1952,7 @@ spec:
     </div>
   </div>
 
-  <!-- J3.05 — Cloud-Native Patterns -->
+  <!-- J3.05 - Cloud-Native Patterns -->
   <div class="slide" data-day="3">
     <div class="slide-number">J3.05</div>
     <div class="slide-title">Patterns Cloud-Native</div>
@@ -1717,12 +1979,12 @@ spec:
           </div>
           <div class="node violet" style="align-self:center; min-width:200px"><small>Control Plane (Istio/Linkerd)</small></div>
         </div>
-        <p style="margin-top:12px">mTLS automatique, retry, circuit breaker, observabilité — sans modifier le code applicatif.</p>
+        <p style="margin-top:12px">mTLS automatique, retry, circuit breaker, observabilité - sans modifier le code applicatif.</p>
       </div>
     </div>
   </div>
 
-  <!-- J3.06 — Multi-Cloud Terraform -->
+  <!-- J3.06 - Multi-Cloud Terraform -->
   <div class="slide" data-day="3">
     <div class="slide-number">J3.06</div>
     <div class="slide-title">Déploiement Multi-Cloud (bonus)</div>
@@ -1759,13 +2021,13 @@ resource "google_compute_instance" "web" {
           <tr><td>Object store</td><td>S3</td><td>GCS</td><td>Blob</td></tr>
         </table>
         <div class="info-box warning">
-          <strong>Piège multi-cloud</strong> : ne pas abstraire trop. Chaque provider a ses forces — utiliser le bon outil pour le bon cas d'usage.
+          <strong>Piège multi-cloud</strong> : ne pas abstraire trop. Chaque provider a ses forces - utiliser le bon outil pour le bon cas d'usage.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- J3.07 — Bilan & Ressources -->
+  <!-- J3.07 - Bilan & Ressources -->
   <div class="slide hero" data-day="3">
     <div class="slide-number">J3.07</div>
     <div class="slide-title">Bilan & Ressources</div>
@@ -1776,7 +2038,7 @@ resource "google_compute_instance" "web" {
       </div>
       <div class="card emerald">
         <h4>Jour 2</h4>
-        <p>Docker avancé<br>Kubernetes & Helm<br>Prometheus & Grafana</p>
+        <p>Terraform + Ansible<br>Image Docker & Kubernetes<br>Helm + Prometheus/Grafana</p>
       </div>
       <div class="card violet">
         <h4>Jour 3</h4>
@@ -1786,21 +2048,21 @@ resource "google_compute_instance" "web" {
     <div style="margin-top: 32px; text-align: left; max-width: 500px;">
       <h3>Pour aller plus loin</h3>
       <ul>
-        <li><strong>Kubernetes the Hard Way</strong> — Kelsey Hightower</li>
-        <li><strong>The Phoenix Project</strong> — Gene Kim</li>
-        <li><strong>SRE Book</strong> — Google</li>
+        <li><strong>Kubernetes the Hard Way</strong> - Kelsey Hightower</li>
+        <li><strong>The Phoenix Project</strong> - Gene Kim</li>
+        <li><strong>SRE Book</strong> - Google</li>
         <li><strong>DORA State of DevOps Report</strong></li>
       </ul>
     </div>
   </div>
 
-  <!-- J3.08 — Merci -->
+  <!-- J3.08 - Merci -->
   <div class="slide hero" data-day="3">
     <div class="slide-number">J3.08</div>
     <div class="slide-title accent">Merci !</div>
-    <p class="slide-subtitle">3 jours intenses — vous êtes prêts à piloter vos pipelines DevOps</p>
+    <p class="slide-subtitle">3 jours intenses - vous êtes prêts à piloter vos pipelines DevOps</p>
     <div style="margin-top: 32px;">
-      <p><strong>Sion GENDERS</strong> — Formateur depuis 2011</p>
+      <p><strong>Sion GENDERS</strong> - Formateur depuis 2011</p>
       <p style="color: var(--accent-cyan);">linkedin.com/in/sion-gdrs/</p>
     </div>
   </div>

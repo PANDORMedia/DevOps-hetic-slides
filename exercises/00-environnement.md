@@ -139,7 +139,7 @@ cd - && rm -rf /tmp/tf-test
 ```bash
 git clone <url-du-repo> devops-training
 cd devops-training
-cp -R starter-code/devops-app app
+cp -R starter-code/app app
 ```
 
 ## Livrable

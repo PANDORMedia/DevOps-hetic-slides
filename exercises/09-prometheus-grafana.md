@@ -1,4 +1,4 @@
-# Prometheus & Grafana — Monitoring
+# Prometheus & Grafana - Monitoring
 
 ## Objectif
 Mettre en place une stack de monitoring complète avec Prometheus pour la collecte de métriques, AlertManager pour les alertes et Grafana pour la visualisation.
@@ -378,7 +378,7 @@ docker compose logs -f webhook-mock
 - Aller sur http://localhost:9090/targets
 - Tous les targets doivent être en état "UP"
 
-### Grafana — importer un dashboard communautaire
+### Grafana - importer un dashboard communautaire
 1. Aller dans Dashboards > Import
 2. Entrer l'ID : `1860` (Node Exporter Full)
 3. Sélectionner la datasource Prometheus

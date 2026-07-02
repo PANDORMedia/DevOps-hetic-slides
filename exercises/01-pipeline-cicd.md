@@ -13,7 +13,7 @@ Vous travaillez sur l'application fil rouge du cours. Elle doit rester cohérent
 Point de départ recommandé :
 
 ```bash
-cp -R starter-code/devops-app app
+cp -R starter-code/app app
 ```
 
 Le dossier `app/` doit contenir :
